@@ -14,6 +14,18 @@ async function bootstrap() {
         queueOptions: {
           durable: true,
         },
+        exchange: 'amq.topic',
+        exchangeType: 'topic',
+        bindings: [
+          {
+            queue: 'notification_queue',
+            bindingKey: 'order.#',
+          },
+          {
+            queue: 'notification_queue',
+            bindingKey: 'payment.#',
+          },
+        ],
       },
     },
   );

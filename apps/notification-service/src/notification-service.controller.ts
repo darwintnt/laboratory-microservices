@@ -14,11 +14,18 @@ export class NotificationServiceController {
   }
 
   @MessagePattern('order-created')
-  createOrder(@Payload() order: any) {
+  sendOrderCreated(@Payload() order: any) {
     console.log(
       '[Notification-Service]: Generate new order notification: ',
       order,
     );
-    return { message: 'Notification Order created' };
+  }
+
+  @MessagePattern('payment-succeed')
+  sendPaymentSucceed(@Payload() order: any) {
+    console.log(
+      '[Notification-Service]: Payment Succeed notification: ',
+      order,
+    );
   }
 }
