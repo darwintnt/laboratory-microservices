@@ -18,16 +18,6 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         },
       },
     ]),
-    ClientsModule.register([
-      {
-        name: ORDER_SERVICE,
-        transport: Transport.TCP,
-        options: {
-          host: 'localhost',
-          port: envs.productsMicroservicePort,
-        },
-      },
-    ]),
   ],
   controllers: [OrderController],
 })

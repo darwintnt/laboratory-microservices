@@ -1,9 +1,10 @@
 import { NestFactory } from '@nestjs/core';
 import { OrderServiceModule } from './order-service.module';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
-import { Logger } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
+  const logger = new Logger('ORDER-SERVICE');
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
     OrderServiceModule,
     {
@@ -17,8 +18,16 @@ async function bootstrap() {
       },
     },
   );
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+    }),
+  );
+
   await app.listen();
 
-  Logger.log(`🚀 Order Service Application is listening...`);
+  logger.log(`🚀 Order Service Application is listening...`);
 }
 bootstrap();

@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { ApiGatewayModule } from './api-gateway.module';
 import { Logger, ValidationPipe } from '@nestjs/common';
+import { RpcCustomExceptionFilter } from './commons/exceptions/rpc-exception.filter';
 
 async function bootstrap() {
   const logger = new Logger('API-GATEWAY');
@@ -21,6 +22,8 @@ async function bootstrap() {
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
   });
+
+  app.useGlobalFilters(new RpcCustomExceptionFilter());
 
   logger.log(`✨ Aplicación NestJS ejecutándose en el puerto: ${port}`);
   logger.log(`🔗 API Gateway disponible en: http://localhost:${port}/api`);
