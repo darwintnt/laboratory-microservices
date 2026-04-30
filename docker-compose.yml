@@ -13,15 +13,15 @@ services:
       - rabbitmq_logs:/var/log/rabbitmq # Logs persistentes (opcional)
     networks:
       - microservices_net
-  
+
   redis:
     image: redis:7-alpine
     container_name: redis
     ports:
-      - "6379:6379"   # Puerto Redis
+      - "6379:6379" # Puerto Redis
     volumes:
-      - redis_data:/data   # Persistencia de datos
-    command: redis-server --appendonly yes  # Habilita persistencia AOF
+      - redis_data:/data # Persistencia de datos
+    command: redis-server --appendonly yes # Habilita persistencia AOF
     networks:
       - microservices_net
   postgres_db:
@@ -44,6 +44,21 @@ services:
       timeout: 5s
       retries: 5
 
+  nats:
+    image: nats:2.12-alpine
+    container_name: nats
+    ports:
+      - "4222:4222" # client connections
+      - "8222:8222" # HTTP monitoring
+      - "6222:6222" # cluster routing (opcional)
+    command: >
+      -js -m 8222 -n nats-server
+    volumes:
+      - nats_data:/data
+    networks:
+      - microservices_net
+    restart: unless-stopped
+
 networks:
   microservices_net:
     driver: bridge
@@ -53,3 +68,4 @@ volumes:
   rabbitmq_data:
   rabbitmq_logs:
   redis_data:
+  nats_data:
