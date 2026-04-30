@@ -1,9 +1,19 @@
 import { firstValueFrom } from 'rxjs';
-import { Body, Controller, Get, Inject, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Inject,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { ClientProxy, RpcException } from '@nestjs/microservices';
 import { AUTH_SERVICE } from 'apps/constants';
 import { RegisterDto } from './dtos/register.dto';
 import { LoginDto } from './dtos/login.dto';
+import { AuthGuard } from './guards/auth.guard';
+import { type Request } from 'express';
 
 @Controller('auth')
 export class AuthController {
@@ -27,12 +37,9 @@ export class AuthController {
     );
   }
 
+  @UseGuards(AuthGuard)
   @Get('verify')
-  async verifyToken(@Body() data: any): Promise<any> {
-    return firstValueFrom(this.client.send('auth.verify.user', data)).catch(
-      (err) => {
-        throw new RpcException(err);
-      },
-    );
+  verifyToken(@Req() req: Request): Record<string, any> {
+    return req['user'];
   }
 }

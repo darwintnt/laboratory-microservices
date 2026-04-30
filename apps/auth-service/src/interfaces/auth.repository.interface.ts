@@ -13,6 +13,8 @@ export interface IAuthRepository {
   create(dto: RegisterDto): Promise<User>;
   update(id: string, dto: RegisterDto): Promise<User | null>;
   delete(id: string): Promise<User>;
+  findUnique(email: string): Promise<User | null>;
+  findOne(email: string): Promise<User | null>;
 }
 
 export const AUTH_REPOSITORY = Symbol('AUTH_REPOSITORY');

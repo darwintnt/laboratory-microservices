@@ -5,7 +5,7 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 import { AuthServiceModule } from './auth-service.module';
 
 async function bootstrap() {
-  const logger = new Logger('ORDER-SERVICE');
+  const logger = new Logger('AUTH-SERVICE');
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
     AuthServiceModule,
     {

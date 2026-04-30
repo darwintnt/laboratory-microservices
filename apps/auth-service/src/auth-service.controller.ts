@@ -17,7 +17,6 @@ export class AuthServiceController {
 
   @MessagePattern('auth.register.user')
   register(@Payload() data: RegisterDto): Promise<any> {
-    this.logger.log('[Register]: ', data);
     return this.authService.register(data);
   }
 
@@ -27,7 +26,7 @@ export class AuthServiceController {
   }
 
   @MessagePattern('auth.verify.user')
-  verifyToken(): Promise<any> {
-    return this.authService.verify();
+  verifyToken(@Payload() token: string): Promise<any> {
+    return this.authService.verify(token);
   }
 }
