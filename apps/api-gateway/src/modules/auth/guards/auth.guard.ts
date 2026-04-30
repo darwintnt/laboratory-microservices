@@ -21,6 +21,7 @@ export class AuthGuard implements CanActivate {
     if (!token) {
       throw new UnauthorizedException('Token not found');
     }
+
     try {
       const payload = await firstValueFrom(
         this.client.send('auth.verify.user', token),
@@ -30,6 +31,7 @@ export class AuthGuard implements CanActivate {
     } catch {
       throw new UnauthorizedException();
     }
+
     return true;
   }
 
